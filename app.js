@@ -1,4 +1,4 @@
-let container = null
+let mainContainer = null
 
 let filer = 'ALL'
 let sort = 'ASCENDING'
@@ -20,3 +20,23 @@ const appendArray = function(array, container){
         container.appendChild(element)
     })
 }
+
+const render = function(){
+    return document.createTextNode('Ala ma kota')
+}
+
+const init = function(selector){
+    const container = document.querySelector(selector)
+    if(!container){
+        console.log('Container do not exist!')
+        return
+    } 
+
+    mainContainer = container
+
+    const app = render()
+
+    mainContainer.appendChild(app)
+}
+
+init('.root')
