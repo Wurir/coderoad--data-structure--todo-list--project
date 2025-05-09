@@ -19,17 +19,17 @@ let tasks = [
     }
 ]
 
-const appendArray = function(array, container){
-    array.forEach(function(element){
+const appendArray = function (array, container) {
+    array.forEach(function (element) {
         container.appendChild(element)
     })
 }
 
-const renderTask = function(task){
+const renderTask = function (task) {
     const container = document.createElement('li')
     container.className = 'todo-list__list-item'
 
-    if(task.isCompleted){
+    if (task.isCompleted) {
         container.className = container.className + ' todo-list__list-item--completed'
     }
 
@@ -38,11 +38,11 @@ const renderTask = function(task){
     return container
 }
 
-const renderTasksList = function(tasks){
+const renderTasksList = function (tasks) {
     const container = document.createElement('ol')
     container.className = 'todo-list__list'
 
-    const tasksElements = tasks.map((task)=> {
+    const tasksElements = tasks.map((task) => {
         return renderTask(task)
     })
 
@@ -50,27 +50,41 @@ const renderTasksList = function(tasks){
     return container
 }
 
-const renderNewTaskInput = function(){
+const renderNewTaskInput = function () {
     const input = document.createElement('input')
     input.className = 'todo-list__input'
+    input.value = newToDoName
+
+    input.addEventListener('input', (e) => {
+        newToDoName = e.target.value
+        newToDoInputIsFocused = true
+        update()
+    })
+
+    setTimeout(function(){
+        input.focus()
+    }, 0)
 
     return input
 }
 
-const renderNewTaskButton = function(text, fn){
+const renderNewTaskButton = function (label, fn) {
     const button = document.createElement('button')
 
     button.className = 'todo-list__button'
-    button.innerText = text
-    button.addEventListener('click', ()=> fn())
+    button.innerText = label
+    button.addEventListener('click', (e) => {
+        e.preventDefault()
+        fn()
+    })
 
     return button
 }
 
-const renderNewTaskForm = function(){
+const renderNewTaskForm = function () {
     const container = document.createElement('form')
     container.className = 'todo-list__form '
-    
+
     const inputElement = renderNewTaskInput()
     const buttonElement = renderNewTaskButton('ADD')
 
@@ -80,7 +94,7 @@ const renderNewTaskForm = function(){
     return container
 }
 
-const render = function(){
+const render = function () {
     const container = document.createElement('div')
     container.className = 'todo-list'
 
@@ -89,16 +103,24 @@ const render = function(){
 
     container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
-    
+
     return container
 }
 
-const init = function(selector){
+const update = function(){
+    mainContainer.innerHTML = ''
+
+    const app = render()
+
+    mainContainer.appendChild(app)
+}
+
+const init = function (selector) {
     const container = document.querySelector(selector)
-    if(!container){
+    if (!container) {
         console.log('Container do not exist!')
         return
-    } 
+    }
 
     mainContainer = container
 
