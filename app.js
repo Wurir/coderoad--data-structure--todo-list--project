@@ -25,8 +25,6 @@ const appendArray = function(array, container){
     })
 }
 
-
-
 const renderTask = function(task){
     const container = document.createElement('li')
     container.className = 'todo-list__list-item'
@@ -52,12 +50,32 @@ const renderTasksList = function(tasks){
     return container
 }
 
+const renderNewTaskInput = function(){
+    const input = document.createElement('input')
+    input.className = 'todo-list__input'
+
+    return input
+}
+
+const renderNewTaskForm = function(){
+    const container = document.createElement('form')
+    container.className = 'todo-list__form '
+    
+    const inputElement = renderNewTaskInput()
+
+    container.appendChild(inputElement)
+
+    return container
+}
+
 const render = function(){
     const container = document.createElement('div')
     container.className = 'todo-list'
 
+    const newTaskFormElement = renderNewTaskForm()
     const taskListElement = renderTasksList(tasks)
 
+    container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
     
     return container
