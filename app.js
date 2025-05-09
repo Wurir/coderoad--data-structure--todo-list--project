@@ -1,3 +1,5 @@
+// App state
+
 let mainContainer = null
 
 let filer = 'ALL'
@@ -19,6 +21,8 @@ let tasks = [
     }
 ]
 
+// State changing functions
+
 const onNewToDoNameChange = function(e){
         newToDoName = e.target.value
         newToDoInputIsFocused = true
@@ -37,6 +41,8 @@ const onNewToDoSubmit = function(e){
 
     update()
 }
+
+// Generic / helper functions
 
 const focus = function(condition, input){
     if(condition){
@@ -64,6 +70,8 @@ const renderTask = function (task) {
 
     return container
 }
+
+// Rendering
 
 const renderTasksList = function (tasks) {
     const container = document.createElement('ol')
