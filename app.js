@@ -42,6 +42,20 @@ const onNewToDoSubmit = function(e){
     update()
 }
 
+const onTaskCompleteToggle = function(indexToToggle){
+
+    tasks = tasks.map(function(task, index){
+        if(index !== indexToToggle) return task
+        
+        return {
+            name: task.name,
+            isCompleted: !task.isCompleted
+        }
+    })
+
+    update()
+}
+
 // Generic / helper functions
 
 const focus = function(condition, input){
@@ -58,9 +72,13 @@ const appendArray = function (array, container) {
     })
 }
 
-const renderTask = function (task) {
+// Rendering
+
+const renderTask = function (task, onClick) {
     const container = document.createElement('li')
     container.className = 'todo-list__list-item'
+
+    container.addEventListener('click', onClick)
 
     if (task.isCompleted) {
         container.className = container.className + ' todo-list__list-item--completed'
@@ -71,14 +89,12 @@ const renderTask = function (task) {
     return container
 }
 
-// Rendering
-
 const renderTasksList = function (tasks) {
     const container = document.createElement('ol')
     container.className = 'todo-list__list'
 
-    const tasksElements = tasks.map((task) => {
-        return renderTask(task)
+    const tasksElements = tasks.map(function (task, index){
+        return renderTask(task, ()=> onTaskCompleteToggle(index))
     })
 
     appendArray(tasksElements, container)
