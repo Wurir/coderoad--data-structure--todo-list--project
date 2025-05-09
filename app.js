@@ -25,6 +25,14 @@ const onNewToDoNameChange = function(e){
         update()
 }
 
+const focus = function(condition, input){
+    if(condition){
+        setTimeout(function(){
+            input.focus()
+        }, 0)
+    }
+}
+
 const appendArray = function (array, container) {
     array.forEach(function (element) {
         container.appendChild(element)
@@ -56,18 +64,15 @@ const renderTasksList = function (tasks) {
     return container
 }
 
-const renderNewTaskInput = function (onChange) {
+const renderNewTaskInput = function (onChange, focusCondition, className) {
     const input = document.createElement('input')
-    input.className = 'todo-list__input'
+    input.className = className
+    
     input.value = newToDoName
 
     input.addEventListener('input', onChange)
 
-    if(newToDoInputIsFocused){
-        setTimeout(function(){
-            input.focus()
-        }, 0)
-    }
+    focus(focusCondition, input)
 
     return input
 }
@@ -89,7 +94,11 @@ const renderNewTaskForm = function () {
     const container = document.createElement('form')
     container.className = 'todo-list__form '
 
-    const inputElement = renderNewTaskInput(onNewToDoNameChange)
+    const inputElement = renderNewTaskInput(
+        onNewToDoNameChange, 
+        newToDoInputIsFocused, 
+        'todo-list__input'
+    )
     const buttonElement = renderNewTaskButton('ADD')
 
     container.appendChild(inputElement)
