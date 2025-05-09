@@ -19,6 +19,12 @@ let tasks = [
     }
 ]
 
+const onNewToDoNameChange = function(e){
+        newToDoName = e.target.value
+        newToDoInputIsFocused = true
+        update()
+}
+
 const appendArray = function (array, container) {
     array.forEach(function (element) {
         container.appendChild(element)
@@ -50,32 +56,30 @@ const renderTasksList = function (tasks) {
     return container
 }
 
-const renderNewTaskInput = function () {
+const renderNewTaskInput = function (onChange) {
     const input = document.createElement('input')
     input.className = 'todo-list__input'
     input.value = newToDoName
 
-    input.addEventListener('input', (e) => {
-        newToDoName = e.target.value
-        newToDoInputIsFocused = true
-        update()
-    })
+    input.addEventListener('input', onChange)
 
-    setTimeout(function(){
-        input.focus()
-    }, 0)
+    if(newToDoInputIsFocused){
+        setTimeout(function(){
+            input.focus()
+        }, 0)
+    }
 
     return input
 }
 
-const renderNewTaskButton = function (label, fn) {
+const renderNewTaskButton = function (label, onclick) {
     const button = document.createElement('button')
 
     button.className = 'todo-list__button'
     button.innerText = label
     button.addEventListener('click', (e) => {
         e.preventDefault()
-        fn()
+        onclick()
     })
 
     return button
@@ -85,7 +89,7 @@ const renderNewTaskForm = function () {
     const container = document.createElement('form')
     container.className = 'todo-list__form '
 
-    const inputElement = renderNewTaskInput()
+    const inputElement = renderNewTaskInput(onNewToDoNameChange)
     const buttonElement = renderNewTaskButton('ADD')
 
     container.appendChild(inputElement)
