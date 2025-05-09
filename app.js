@@ -57,13 +57,25 @@ const renderNewTaskInput = function(){
     return input
 }
 
+const renderNewTaskButton = function(text, fn){
+    const button = document.createElement('button')
+
+    button.className = 'todo-list__button'
+    button.innerText = text
+    button.addEventListener('click', ()=> fn())
+
+    return button
+}
+
 const renderNewTaskForm = function(){
     const container = document.createElement('form')
     container.className = 'todo-list__form '
     
     const inputElement = renderNewTaskInput()
+    const buttonElement = renderNewTaskButton('ADD')
 
     container.appendChild(inputElement)
+    container.appendChild(buttonElement)
 
     return container
 }
