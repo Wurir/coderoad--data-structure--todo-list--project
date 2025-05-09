@@ -23,13 +23,13 @@ let tasks = [
 
 // State changing functions
 
-const onNewToDoNameChange = function(e){
-        newToDoName = e.target.value
-        newToDoInputIsFocused = true
-        update()
+const onNewToDoNameChange = function (e) {
+    newToDoName = e.target.value
+    newToDoInputIsFocused = true
+    update()
 }
 
-const onNewToDoSubmit = function(e){
+const onNewToDoSubmit = function (e) {
     e.preventDefault()
 
     tasks = tasks.concat({
@@ -42,11 +42,11 @@ const onNewToDoSubmit = function(e){
     update()
 }
 
-const onTaskCompleteToggle = function(indexToToggle){
+const onTaskCompleteToggle = function (indexToToggle) {
 
-    tasks = tasks.map(function(task, index){
-        if(index !== indexToToggle) return task
-        
+    tasks = tasks.map(function (task, index) {
+        if (index !== indexToToggle) return task
+
         return {
             name: task.name,
             isCompleted: !task.isCompleted
@@ -56,11 +56,19 @@ const onTaskCompleteToggle = function(indexToToggle){
     update()
 }
 
+const onTaskDelete = function (indexToDelete) {
+    tasks = tasks.filter(function (task, index) {
+        return index !== indexToDelete
+    })
+
+    update()
+}
+
 // Generic / helper functions
 
-const focus = function(condition, input){
-    if(condition){
-        setTimeout(function(){
+const focus = function (condition, input) {
+    if (condition) {
+        setTimeout(function () {
             input.focus()
         }, 0)
     }
@@ -74,17 +82,29 @@ const appendArray = function (array, container) {
 
 // Rendering
 
-const renderTask = function (task, onClick) {
+const renderTask = function (task, onTaskToggle, onDelete) {
     const container = document.createElement('li')
+    const wrapper = document.createElement('div')
+    const textContainer = document.createElement('span')
+    
     container.className = 'todo-list__list-item'
-
-    container.addEventListener('click', onClick)
+    wrapper.className = 'todo-list__list-item-wrapper'
+    textContainer.className = 'todo-list__list-item-text-container'
 
     if (task.isCompleted) {
         container.className = container.className + ' todo-list__list-item--completed'
     }
 
-    container.innerText = task.name
+    const onDeleteButton = renderButton('X', onDelete, 'todo-list__button todo-list__button--delete')
+
+    container.addEventListener('click', onTaskToggle)
+
+    const text = document.createTextNode(task.name)
+
+    textContainer.appendChild(text)
+    wrapper.appendChild(textContainer)
+    wrapper.appendChild(onDeleteButton)
+    container.appendChild(wrapper)
 
     return container
 }
@@ -93,8 +113,8 @@ const renderTasksList = function (tasks) {
     const container = document.createElement('ol')
     container.className = 'todo-list__list'
 
-    const tasksElements = tasks.map(function (task, index){
-        return renderTask(task, ()=> onTaskCompleteToggle(index))
+    const tasksElements = tasks.map(function (task, index) {
+        return renderTask(task, () => onTaskCompleteToggle(index), ()=> onTaskDelete(index))
     })
 
     appendArray(tasksElements, container)
@@ -114,19 +134,27 @@ const renderInput = function (onChange, focusCondition, className) {
     return input
 }
 
-const renderNewTaskButton = function (label) {
+const renderButton = function (label, onClick, className) {
     const button = document.createElement('button')
+    button.className = className
 
-    button.className = 'todo-list__button'
+    if (onClick) {
+        button.addEventListener('click', onClick)
+    }
+
     button.innerText = label
 
     return button
 }
 
-const renderNewTaskInput = function(){
+const renderNewTaskButton = function (label) {
+    return renderButton(label, null, 'todo-list__button')
+}
+
+const renderNewTaskInput = function () {
     return renderInput(
-        onNewToDoNameChange, 
-        newToDoInputIsFocused, 
+        onNewToDoNameChange,
+        newToDoInputIsFocused,
         'todo-list__input'
     )
 }
@@ -159,7 +187,7 @@ const render = function () {
     return container
 }
 
-const update = function(){
+const update = function () {
     mainContainer.innerHTML = ''
 
     const app = render()
