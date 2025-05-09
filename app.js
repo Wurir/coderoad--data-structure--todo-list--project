@@ -64,10 +64,10 @@ const renderTasksList = function (tasks) {
     return container
 }
 
-const renderNewTaskInput = function (onChange, focusCondition, className) {
+const renderInput = function (onChange, focusCondition, className) {
     const input = document.createElement('input')
     input.className = className
-    
+
     input.value = newToDoName
 
     input.addEventListener('input', onChange)
@@ -94,7 +94,7 @@ const renderNewTaskForm = function () {
     const container = document.createElement('form')
     container.className = 'todo-list__form '
 
-    const inputElement = renderNewTaskInput(
+    const inputElement = renderInput(
         onNewToDoNameChange, 
         newToDoInputIsFocused, 
         'todo-list__input'
