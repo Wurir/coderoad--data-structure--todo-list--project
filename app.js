@@ -25,6 +25,19 @@ const onNewToDoNameChange = function(e){
         update()
 }
 
+const onNewToDoSubmit = function(e){
+    e.preventDefault()
+
+    tasks = tasks.concat({
+        name: newToDoName,
+        isCompleted: false
+    })
+
+    newToDoName = ''
+
+    update()
+}
+
 const focus = function(condition, input){
     if(condition){
         setTimeout(function(){
@@ -77,28 +90,30 @@ const renderInput = function (onChange, focusCondition, className) {
     return input
 }
 
-const renderNewTaskButton = function (label, onclick) {
+const renderNewTaskButton = function (label) {
     const button = document.createElement('button')
 
     button.className = 'todo-list__button'
     button.innerText = label
-    button.addEventListener('click', (e) => {
-        e.preventDefault()
-        onclick()
-    })
 
     return button
+}
+
+const renderNewTaskInput = function(){
+    return renderInput(
+        onNewToDoNameChange, 
+        newToDoInputIsFocused, 
+        'todo-list__input'
+    )
 }
 
 const renderNewTaskForm = function () {
     const container = document.createElement('form')
     container.className = 'todo-list__form '
 
-    const inputElement = renderInput(
-        onNewToDoNameChange, 
-        newToDoInputIsFocused, 
-        'todo-list__input'
-    )
+    container.addEventListener('submit', onNewToDoSubmit)
+
+    const inputElement = renderNewTaskInput()
     const buttonElement = renderNewTaskButton('ADD')
 
     container.appendChild(inputElement)
