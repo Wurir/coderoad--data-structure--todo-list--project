@@ -3,7 +3,7 @@
 let mainContainer = null
 
 let filter = 'ALL'
-let sort = 'ASCENDING'
+let sort = 'NONE'
 
 let searchPhrase = ''
 let searchInputIsFocused = false
@@ -266,13 +266,13 @@ const renderSort = function (activeSort) {
     const container = document.createElement('div')
     container.className = 'todo-list__sort'
 
+    const buttonNone = renderSortButton('NONE', activeSort)
     const buttonAscending = renderSortButton('ASCENDING', activeSort)
     const buttonDescending = renderSortButton('DESCENDING', activeSort)
-    const buttonNone = renderSortButton('NONE', activeSort)
 
+    container.appendChild(buttonNone)
     container.appendChild(buttonAscending)
     container.appendChild(buttonDescending)
-    container.appendChild(buttonNone)
 
     return container
 }
