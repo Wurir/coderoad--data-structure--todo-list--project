@@ -3,6 +3,7 @@ const createToDoInit = function () {
     // App state
 
     let mainContainer = null
+    let localStorageKey = ''
 
     let filter = 'ALL'
     let sort = 'NONE'
@@ -15,7 +16,7 @@ const createToDoInit = function () {
     let tasks = []
 
     const loadFromLocalStorage = function () {
-        const state = JSON.parse(localStorage.getItem('todo'))
+        const state = JSON.parse(localStorage.getItem(localStorageKey))
 
         if (!state) return
 
@@ -40,7 +41,7 @@ const createToDoInit = function () {
             tasks: tasks
         }
 
-        localStorage.setItem('todo', JSON.stringify(state))
+        localStorage.setItem(localStorageKey, JSON.stringify(state))
     }
 
     // State changing functions
@@ -360,16 +361,17 @@ const createToDoInit = function () {
         mainContainer.appendChild(app)
     }
 
-    const init = function (selector) {
+    const init = function (selector, key) {
         const container = document.querySelector(selector)
         if (!container) {
             console.log('Container do not exist!')
             return
         }
 
-        loadFromLocalStorage()
-
         mainContainer = container
+        localStorageKey = key
+        
+        loadFromLocalStorage()
 
         const app = render()
 
