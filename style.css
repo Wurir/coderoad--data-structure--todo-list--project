@@ -1,5 +1,18 @@
+.todo-list {
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+.todo-list__filters {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
 .todo-list__form {
     display: flex;
+    max-width: 500px;
 }
 
 .todo-list__input {
@@ -27,6 +40,13 @@
     width: 20px;
     color: white;
     background-color: #c0392b;
+}
+
+.todo-list__button--filter {
+    width: 30%;
+}
+.todo-list__button--filter-active {
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .todo-list__button:hover {
