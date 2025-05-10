@@ -80,6 +80,14 @@ const onFilterChange = function (filterValue) {
     update()
 }
 
+const filterBySearchPhrase = function(task){
+    const name = task.name.toLowerCase()
+    const search = searchPhrase.toLowerCase()
+
+    if(name.includes(search)) return true
+    return false
+}
+
 // Generic / helper functions
 
 const focus = function (condition, input) {
@@ -218,7 +226,10 @@ const render = function () {
     const container = document.createElement('div')
     container.className = 'todo-list'
 
-    const filteredTasks = tasks.filter(filterByCompleted)
+    const filteredTasks = tasks
+        .filter(filterByCompleted)
+        .filter(filterBySearchPhrase)
+    
 
     const filtersElement = renderFilters(filter)
     const newTaskFormElement = renderNewTaskForm()
