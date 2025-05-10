@@ -2,7 +2,7 @@
 
 let mainContainer = null
 
-let filer = 'ALL'
+let filter = 'ALL'
 let sort = 'ASCENDING'
 
 let searchPhrase = ''
@@ -64,6 +64,16 @@ const onTaskDelete = function (indexToDelete) {
     update()
 }
 
+const filterByCompleted = function(task){
+    if(filter === 'ALL') return true
+
+    if(filter === 'DONE') return task.isCompleted
+
+    if(filter === 'NOT-DONE') return !task.isCompleted
+
+    return true
+}
+
 // Generic / helper functions
 
 const focus = function (condition, input) {
@@ -86,7 +96,7 @@ const renderTask = function (task, onTaskToggle, onDelete) {
     const container = document.createElement('li')
     const wrapper = document.createElement('div')
     const textContainer = document.createElement('span')
-    
+
     container.className = 'todo-list__list-item'
     wrapper.className = 'todo-list__list-item-wrapper'
     textContainer.className = 'todo-list__list-item-text-container'
@@ -114,7 +124,7 @@ const renderTasksList = function (tasks) {
     container.className = 'todo-list__list'
 
     const tasksElements = tasks.map(function (task, index) {
-        return renderTask(task, () => onTaskCompleteToggle(index), ()=> onTaskDelete(index))
+        return renderTask(task, () => onTaskCompleteToggle(index), () => onTaskDelete(index))
     })
 
     appendArray(tasksElements, container)
@@ -178,8 +188,10 @@ const render = function () {
     const container = document.createElement('div')
     container.className = 'todo-list'
 
+    const filteredTasks = tasks.filter(filterByCompleted)
+
     const newTaskFormElement = renderNewTaskForm()
-    const taskListElement = renderTasksList(tasks)
+    const taskListElement = renderTasksList(filteredTasks)
 
     container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
