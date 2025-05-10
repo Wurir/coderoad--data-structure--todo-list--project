@@ -3,7 +3,7 @@
     max-width: 500px;
 }
 
-.todo-list__filters {
+.todo-list__filters, .todo-list__sort {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
@@ -42,10 +42,10 @@
     background-color: #c0392b;
 }
 
-.todo-list__button--filter {
+.todo-list__button--filter, .todo-list__button--sort {
     width: 30%;
 }
-.todo-list__button--filter-active {
+.todo-list__button--filter-active, .todo-list__button--sort-active  {
     background-color: rgba(0, 0, 0, 0.25);
 }
 

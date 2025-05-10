@@ -85,6 +85,12 @@ const onFilterChange = function (filterValue) {
     update()
 }
 
+const onSortChange = function (sortValue) {
+    sort = sortValue
+
+    update()
+}
+
 const filterBySearchPhrase = function(task){
     const name = task.name.toLowerCase()
     const search = searchPhrase.toLowerCase()
@@ -247,6 +253,30 @@ const renderFilters = function (activeFilter) {
     return container
 }
 
+const renderSortButton = function(sortValue, activeSort){
+    let className = 'todo-list__button todo-list__button--sort'
+    if(sortValue === activeSort){
+        className = className + ' todo-list__button--sort-active'
+    }
+
+        return renderButton(sortValue, () => onSortChange(sortValue), className)       
+}
+
+const renderSort = function (activeSort) {
+    const container = document.createElement('div')
+    container.className = 'todo-list__sort'
+
+    const buttonAscending = renderSortButton('ASCENDING', activeSort)
+    const buttonDescending = renderSortButton('DESCENDING', activeSort)
+    const buttonNone = renderSortButton('NONE', activeSort)
+
+    container.appendChild(buttonAscending)
+    container.appendChild(buttonDescending)
+    container.appendChild(buttonNone)
+
+    return container
+}
+
 const renderSearch = function () {
     const container = document.createElement('div')
     container.className = 'todo-list__filters'
@@ -284,11 +314,13 @@ const render = function () {
 
     const searchElement = renderSearch()
     const filtersElement = renderFilters(filter)
+    const sortElement = renderSort(sort)
     const newTaskFormElement = renderNewTaskForm()
     const taskListElement = renderTasksList(sortedTasks)
 
     container.appendChild(searchElement)
     container.appendChild(filtersElement)
+    container.appendChild(sortElement)
     container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
 
