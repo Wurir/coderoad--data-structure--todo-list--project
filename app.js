@@ -25,6 +25,20 @@ let tasks = [
     }
 ]
 
+const saveToLocalStorage = function () {
+    const state = {
+        filter: filter,
+        sort: sort,
+        searchPhrase: searchPhrase,
+        searchInputIsFocused: searchInputIsFocused,
+        newToDoName: newToDoName,
+        newToDoInputIsFocused: newToDoInputIsFocused,
+        tasks: tasks
+    }
+
+    localStorage.setItem('todo', JSON.stringify(state))
+}
+
 // State changing functions
 
 const onNewToDoNameChange = function (e) {
@@ -91,11 +105,11 @@ const onSortChange = function (sortValue) {
     update()
 }
 
-const filterBySearchPhrase = function(task){
+const filterBySearchPhrase = function (task) {
     const name = task.name.toLowerCase()
     const search = searchPhrase.toLowerCase()
 
-    if(name.includes(search)) return true
+    if (name.includes(search)) return true
     return false
 }
 
@@ -109,14 +123,14 @@ const onSearchPhraseChange = function (e) {
 
 // Generic / helper functions
 
-const sortDescending = function(taskA, taskB){
+const sortDescending = function (taskA, taskB) {
     return -(taskA.name.localeCompare(taskB.name))
 }
 
-const sortAscending = function(taskA, taskB){
+const sortAscending = function (taskA, taskB) {
     return taskA.name.localeCompare(taskB.name)
 }
-const sortNone = function(taskA, taskB){
+const sortNone = function (taskA, taskB) {
     return 0
 }
 
@@ -229,13 +243,13 @@ const renderNewTaskForm = function () {
     return container
 }
 
-const renderFilterButton = function(filterValue, activeFilter){
+const renderFilterButton = function (filterValue, activeFilter) {
     let className = 'todo-list__button todo-list__button--filter'
-    if(filterValue === activeFilter){
+    if (filterValue === activeFilter) {
         className = className + ' todo-list__button--filter-active'
     }
 
-        return renderButton(filterValue, () => onFilterChange(filterValue), className)       
+    return renderButton(filterValue, () => onFilterChange(filterValue), className)
 }
 
 const renderFilters = function (activeFilter) {
@@ -253,13 +267,13 @@ const renderFilters = function (activeFilter) {
     return container
 }
 
-const renderSortButton = function(sortValue, activeSort){
+const renderSortButton = function (sortValue, activeSort) {
     let className = 'todo-list__button todo-list__button--sort'
-    if(sortValue === activeSort){
+    if (sortValue === activeSort) {
         className = className + ' todo-list__button--sort-active'
     }
 
-        return renderButton(sortValue, () => onSortChange(sortValue), className)       
+    return renderButton(sortValue, () => onSortChange(sortValue), className)
 }
 
 const renderSort = function (activeSort) {
@@ -301,16 +315,16 @@ const render = function () {
         .slice()
         .sort((taskA, taskB) => {
 
-            if(sort === 'ASCENDING') {
+            if (sort === 'ASCENDING') {
                 return sortAscending(taskA, taskB)
             }
 
-            if(sort === 'NONE') {
+            if (sort === 'NONE') {
                 return sortNone(taskA, taskB)
             }
-            
+
             return sortDescending(taskA, taskB)
-        })    
+        })
 
     const searchElement = renderSearch()
     const filtersElement = renderFilters(filter)
@@ -331,6 +345,7 @@ const update = function () {
     mainContainer.innerHTML = ''
 
     const app = render()
+    saveToLocalStorage()
 
     mainContainer.appendChild(app)
 }
