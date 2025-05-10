@@ -64,14 +64,20 @@ const onTaskDelete = function (indexToDelete) {
     update()
 }
 
-const filterByCompleted = function(task){
-    if(filter === 'ALL') return true
+const filterByCompleted = function (task) {
+    if (filter === 'ALL') return true
 
-    if(filter === 'DONE') return task.isCompleted
+    if (filter === 'DONE') return task.isCompleted
 
-    if(filter === 'NOT-DONE') return !task.isCompleted
+    if (filter === 'NOT-DONE') return !task.isCompleted
 
     return true
+}
+
+const onFilterChange = function (filterValue) {
+    filter = filterValue
+
+    update()
 }
 
 // Generic / helper functions
@@ -184,15 +190,31 @@ const renderNewTaskForm = function () {
     return container
 }
 
+const renderFilters = function () {
+    const container = document.createElement('div')
+
+    const buttonAll = renderButton('ALL', () => onFilterChange('ALL'), 'todo-list__button')
+    const buttonDone = renderButton('DONE', () => onFilterChange('DONE'), 'todo-list__button')
+    const buttonNotDone = renderButton('NOT-DONE', () => onFilterChange('NOT-DONE'), 'todo-list__button')
+
+    container.appendChild(buttonAll)
+    container.appendChild(buttonDone)
+    container.appendChild(buttonNotDone)
+
+    return container
+}
+
 const render = function () {
     const container = document.createElement('div')
     container.className = 'todo-list'
 
     const filteredTasks = tasks.filter(filterByCompleted)
 
+    const filtersElement = renderFilters()
     const newTaskFormElement = renderNewTaskForm()
     const taskListElement = renderTasksList(filteredTasks)
 
+    container.appendChild(filtersElement)
     container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
 
