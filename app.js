@@ -1,3 +1,7 @@
+const initToDo = (function(){
+
+
+
 // App state
 
 let mainContainer = null
@@ -368,4 +372,8 @@ const init = function (selector) {
     mainContainer.appendChild(app)
 }
 
-init('.root')
+return init
+
+})()
+
+initToDo('.root')
