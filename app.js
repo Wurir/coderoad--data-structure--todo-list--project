@@ -16,6 +16,10 @@ let tasks = [
         isCompleted: true,
     },
     {
+        name: 'Ala kupi kota',
+        isCompleted: true,
+    },
+    {
         name: 'Zmyj naczynia',
         isCompleted: false,
     }
@@ -95,6 +99,7 @@ const onSearchPhraseChange = function (e) {
     searchInputIsFocused = true
     update()
 }
+
 
 // Generic / helper functions
 
@@ -250,12 +255,19 @@ const render = function () {
     const filteredTasks = tasks
         .filter(filterByCompleted)
         .filter(filterBySearchPhrase)
-    
+
+    const sortedTasks = filteredTasks
+        .slice()
+        .sort((taskA, taskB)=> {
+            if(taskA.name < taskB.name) return -1
+            if(taskA.name > taskB.name) return 1
+            return 0
+        })    
 
     const searchElement = renderSearch()
     const filtersElement = renderFilters(filter)
     const newTaskFormElement = renderNewTaskForm()
-    const taskListElement = renderTasksList(filteredTasks)
+    const taskListElement = renderTasksList(sortedTasks)
 
     container.appendChild(searchElement)
     container.appendChild(filtersElement)
