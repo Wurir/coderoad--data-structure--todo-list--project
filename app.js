@@ -103,6 +103,17 @@ const onSearchPhraseChange = function (e) {
 
 // Generic / helper functions
 
+const sortDescending = function(taskA, taskB){
+    return -(taskA.name.localeCompare(taskB.name))
+}
+
+const sortAscending = function(taskA, taskB){
+    return taskA.name.localeCompare(taskB.name)
+}
+const sortNone = function(taskA, taskB){
+    return 0
+}
+
 const focus = function (condition, input) {
     if (condition) {
         setTimeout(function () {
@@ -258,7 +269,18 @@ const render = function () {
 
     const sortedTasks = filteredTasks
         .slice()
-        .sort((taskA, taskB)=> -taskA.name.localeCompare(taskB.name))    
+        .sort((taskA, taskB) => {
+
+            if(sort === 'ASCENDING') {
+                return sortAscending(taskA, taskB)
+            }
+
+            if(sort === 'NONE') {
+                return sortNone(taskA, taskB)
+            }
+            
+            return sortDescending(taskA, taskB)
+        })    
 
     const searchElement = renderSearch()
     const filtersElement = renderFilters(filter)
