@@ -25,6 +25,7 @@ let tasks = [
 
 const onNewToDoNameChange = function (e) {
     newToDoName = e.target.value
+    searchInputIsFocused = false
     newToDoInputIsFocused = true
     update()
 }
@@ -88,6 +89,13 @@ const filterBySearchPhrase = function(task){
     return false
 }
 
+const onSearchPhraseChange = function (e) {
+    searchPhrase = e.target.value
+    newToDoInputIsFocused = false
+    searchInputIsFocused = true
+    update()
+}
+
 // Generic / helper functions
 
 const focus = function (condition, input) {
@@ -145,11 +153,11 @@ const renderTasksList = function (tasks) {
     return container
 }
 
-const renderInput = function (onChange, focusCondition, className) {
+const renderInput = function (onChange, value, focusCondition, className) {
     const input = document.createElement('input')
     input.className = className
 
-    input.value = newToDoName
+    input.value = value
 
     input.addEventListener('input', onChange)
 
@@ -178,6 +186,7 @@ const renderNewTaskButton = function (label) {
 const renderNewTaskInput = function () {
     return renderInput(
         onNewToDoNameChange,
+        newToDoName,
         newToDoInputIsFocused,
         'todo-list__input'
     )
@@ -222,6 +231,18 @@ const renderFilters = function (activeFilter) {
     return container
 }
 
+const renderSearch = function () {
+    const container = document.createElement('div')
+    container.className = 'todo-list__filters'
+
+    const input = renderInput(onSearchPhraseChange, searchPhrase, searchInputIsFocused, 'todo-list__input')
+    input.placeholder = 'Search'
+
+    container.appendChild(input)
+
+    return container
+}
+
 const render = function () {
     const container = document.createElement('div')
     container.className = 'todo-list'
@@ -231,10 +252,12 @@ const render = function () {
         .filter(filterBySearchPhrase)
     
 
+    const searchElement = renderSearch()
     const filtersElement = renderFilters(filter)
     const newTaskFormElement = renderNewTaskForm()
     const taskListElement = renderTasksList(filteredTasks)
 
+    container.appendChild(searchElement)
     container.appendChild(filtersElement)
     container.appendChild(newTaskFormElement)
     container.appendChild(taskListElement)
